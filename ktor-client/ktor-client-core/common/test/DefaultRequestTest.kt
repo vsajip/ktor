@@ -51,7 +51,7 @@ class DefaultRequestTest {
 
         assertEquals("http://base.url/path/default_file", client.get {}.bodyAsText())
         assertEquals("http://base.url/", client.get("/").bodyAsText())
-        assertEquals("http://base.url/path/default_file/file", client.get("file").bodyAsText())
+        assertEquals("http://base.url/path/file", client.get("file").bodyAsText())
         assertEquals("http://base.url/other_path", client.get("/other_path").bodyAsText())
         assertEquals("http://other.host/other_path", client.get("//other.host/other_path").bodyAsText())
     }
@@ -113,7 +113,7 @@ class DefaultRequestTest {
             assertEquals("https://localhost", client.get {}.bodyAsText())
             assertEquals("ws://other.host:443/", client.get("ws://other.host/").bodyAsText())
         } else {
-            assertEquals("https://${defaultUrl.hostWithPort}/", client.get {}.bodyAsText())
+            assertEquals("https://${defaultUrl.hostWithPort}", client.get {}.bodyAsText())
             assertEquals("ws://other.host:${defaultUrl.port}/", client.get("ws://other.host/").bodyAsText())
         }
         assertEquals("ws://other.host:123", client.get("ws://other.host:123").bodyAsText())

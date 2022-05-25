@@ -5,7 +5,7 @@ val WIN_LIBRARY_PATH =
     "c:\\msys64\\mingw64\\bin;c:\\tools\\msys64\\mingw64\\bin;C:\\Tools\\msys2\\mingw64\\bin"
 
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin {

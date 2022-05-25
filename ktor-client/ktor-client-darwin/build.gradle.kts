@@ -1,4 +1,6 @@
 
+apply<server.TestServerPlugin>()
+
 kotlin.sourceSets {
     darwinMain {
         dependencies {

@@ -1,7 +1,7 @@
 description = "Ktor CBOR Content Negotiation via kotlinx.serialization support"
 
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin.sourceSets {

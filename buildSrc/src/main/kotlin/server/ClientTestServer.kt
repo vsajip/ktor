@@ -1,10 +1,9 @@
 /*
-* Copyright 2014-2021 JetBrains s.r.o and contributors. Use of this source code is governed by the Apache 2.0 license.
-*/
+ * Copyright 2014-2022 JetBrains s.r.o and contributors. Use of this source code is governed by the Apache 2.0 license.
+ */
 
-package io.ktor.client.tests.utils
+package server
 
-import io.ktor.client.tests.utils.tests.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.defaultheaders.*
@@ -12,6 +11,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.websocket.*
+import server.tests.*
 
 internal fun Application.tests() {
     install(io.ktor.server.websocket.WebSockets) {

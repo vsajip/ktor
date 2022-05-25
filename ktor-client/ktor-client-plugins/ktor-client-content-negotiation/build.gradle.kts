@@ -5,7 +5,7 @@
 description = "Ktor client Content Negotiation support"
 
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin {

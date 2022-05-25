@@ -1,7 +1,7 @@
 description = "Client side Resources feature"
 
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin.sourceSets {

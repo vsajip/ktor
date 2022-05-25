@@ -1,5 +1,5 @@
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin.sourceSets {

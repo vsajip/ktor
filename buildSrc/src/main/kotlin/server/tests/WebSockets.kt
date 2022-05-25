@@ -1,4 +1,4 @@
-package io.ktor.client.tests.utils.tests
+package server.tests
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*

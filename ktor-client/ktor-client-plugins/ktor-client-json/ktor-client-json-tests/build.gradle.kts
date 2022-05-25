@@ -5,7 +5,7 @@
 description = "Common tests for client-json"
 
 plugins {
-    id("kotlinx-serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin.sourceSets {

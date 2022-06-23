@@ -40,6 +40,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:2.0.2")
     implementation("io.ktor:ktor-serialization-kotlinx:2.0.2")
     implementation("io.ktor:ktor-network-tls-certificates:2.0.2")
+    implementation("org.jetbrains.kotlinx:kover:0.5.0")
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.logback.classic)

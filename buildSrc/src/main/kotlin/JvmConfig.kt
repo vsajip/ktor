@@ -3,6 +3,7 @@
  */
 @file:Suppress("UNUSED_VARIABLE")
 
+import kotlinx.kover.api.*
 import org.gradle.api.*
 import org.gradle.api.tasks.testing.*
 import org.gradle.jvm.tasks.*
@@ -77,6 +78,10 @@ fun Project.configureJvm() {
     }
 
     tasks.create<Test>("stressTest") {
+        extensions.configure(KoverTaskExtension::class) {
+            isDisabled = true
+        }
+
         classpath = files(jvmTest.classpath)
         testClassesDirs = files(jvmTest.testClassesDirs)
 

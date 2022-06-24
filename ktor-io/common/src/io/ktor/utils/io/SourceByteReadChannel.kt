@@ -9,7 +9,7 @@ import io.ktor.utils.io.bits.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 
-internal class SourceByteReadChannel(val source: BufferedSource): ByteReadChannel {
+internal abstract class SourceByteReadChannel(val source: BufferedSource): ByteReadChannel {
     override val availableForRead: Int
         get() = source.peek().readCapacity()
 

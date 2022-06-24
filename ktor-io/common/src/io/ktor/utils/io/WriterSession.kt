@@ -18,64 +18,25 @@ public suspend inline fun ByteWriteChannel.write(
     desiredSpace: Int = 1,
     block: (freeSpace: Memory, startOffset: Long, endExclusive: Long) -> Int
 ): Int {
-    val buffer = requestWriteBuffer(desiredSpace) ?: Buffer.Empty
+    val buffer = requestWriteBuffer()
     var bytesWritten = 0
     try {
         bytesWritten = block(buffer.memory, buffer.writePosition.toLong(), buffer.limit.toLong())
         buffer.commitWritten(bytesWritten)
         return bytesWritten
     } finally {
-        completeWriting(buffer, bytesWritten)
+        completeWriting(buffer)
     }
-}
-
-@Suppress("DEPRECATION")
-@Deprecated("Use writeMemory instead.")
-public interface WriterSession {
-    public fun request(min: Int): ChunkBuffer?
-    public fun written(n: Int)
-    public fun flush()
-}
-
-@Suppress("DEPRECATION")
-@Deprecated("Use writeMemory instead.")
-public interface WriterSuspendSession : WriterSession {
-    public suspend fun tryAwait(n: Int)
-}
-
-@Suppress("DEPRECATION")
-internal interface HasWriteSession {
-    public fun beginWriteSession(): WriterSuspendSession?
-    public fun endWriteSession(written: Int)
 }
 
 @PublishedApi
-internal suspend fun ByteWriteChannel.requestWriteBuffer(desiredSpace: Int): Buffer? {
-    val session = writeSessionFor()
-    if (session != null) {
-        val buffer = session.request(desiredSpace)
-        if (buffer != null) {
-            return buffer
-        }
-
-        return writeBufferSuspend(session, desiredSpace)
-    }
-
-    return writeBufferFallback()
+internal suspend fun ByteWriteChannel.requestWriteBuffer(): Buffer = ChunkBuffer.Pool.borrow().also {
+    it.resetForWrite()
+    it.reserveEndGap(Buffer.ReservedSize)
 }
 
 @PublishedApi
-internal suspend fun ByteWriteChannel.completeWriting(buffer: Buffer, written: Int) {
-    if (this is HasWriteSession) {
-        endWriteSession(written)
-        return
-    }
-
-    return completeWritingFallback(buffer)
-}
-
-@Suppress("DEPRECATION")
-private suspend fun ByteWriteChannel.completeWritingFallback(buffer: Buffer) {
+internal suspend fun ByteWriteChannel.completeWriting(buffer: Buffer) {
     if (buffer is ChunkBuffer) {
         writeFully(buffer)
         buffer.release(ChunkBuffer.Pool)
@@ -83,21 +44,4 @@ private suspend fun ByteWriteChannel.completeWritingFallback(buffer: Buffer) {
     }
 
     throw UnsupportedOperationException("Only ChunkBuffer instance is supported.")
-}
-
-@Suppress("DEPRECATION")
-private suspend fun writeBufferSuspend(session: WriterSuspendSession, desiredSpace: Int): Buffer? {
-    session.tryAwait(desiredSpace)
-    return session.request(desiredSpace) ?: session.request(1)
-}
-
-private fun writeBufferFallback(): Buffer = ChunkBuffer.Pool.borrow().also {
-    it.resetForWrite()
-    it.reserveEndGap(Buffer.ReservedSize)
-}
-
-@Suppress("DEPRECATION", "NOTHING_TO_INLINE")
-private inline fun ByteWriteChannel.writeSessionFor(): WriterSuspendSession? = when {
-    this is HasWriteSession -> beginWriteSession()
-    else -> null
 }

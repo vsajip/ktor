@@ -57,10 +57,6 @@ public expect interface ByteWriteChannel {
 
     public suspend fun writeFully(memory: Memory, startIndex: Int, endIndex: Int)
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Use write { } instead.")
-    public suspend fun writeSuspendSession(visitor: suspend WriterSuspendSession.() -> Unit)
-
     /**
      * Writes a [packet] fully or fails if channel get closed before the whole packet has been written
      */

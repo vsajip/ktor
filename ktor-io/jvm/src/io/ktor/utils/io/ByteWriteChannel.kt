@@ -95,10 +95,6 @@ public actual interface ByteWriteChannel {
      */
     public suspend fun writeWhile(block: (ByteBuffer) -> Boolean)
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Use write { } instead.")
-    public actual suspend fun writeSuspendSession(visitor: suspend WriterSuspendSession.() -> Unit)
-
     /**
      * Writes a [packet] fully or fails if channel get closed before the whole packet has been written
      */

@@ -12,6 +12,7 @@ fun Project.configureCommon() {
             val commonMain by getting {
                 dependencies {
                     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
+                    api("io.ktor.io:core:0.1-SNAPSHOT")
                 }
             }
 

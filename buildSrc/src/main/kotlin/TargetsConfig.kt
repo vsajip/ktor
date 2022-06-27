@@ -115,8 +115,8 @@ fun Project.configureTargets() {
                 }
 
                 posixTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(posixMain)
-                    getByName("${it.name}Test").dependsOn(posixTest)
+                    getByName("${it}Main").dependsOn(posixMain)
+                    getByName("${it}Test").dependsOn(posixTest)
                 }
             }
 
@@ -132,8 +132,8 @@ fun Project.configureTargets() {
                 }
 
                 nixTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(nixMain)
-                    getByName("${it.name}Test").dependsOn(nixTest)
+                    getByName("${it}Main").dependsOn(nixMain)
+                    getByName("${it}Test").dependsOn(nixTest)
                 }
             }
 
@@ -157,28 +157,28 @@ fun Project.configureTargets() {
                 watchosMain.dependsOn(darwinMain)
 
                 macosTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(macosMain)
-                    getByName("${it.name}Test").dependsOn(macosTest)
+                    getByName("${it}Main").dependsOn(macosMain)
+                    getByName("${it}Test").dependsOn(macosTest)
                 }
 
                 iosTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(iosMain)
-                    getByName("${it.name}Test").dependsOn(iosTest)
+                    getByName("${it}Main").dependsOn(iosMain)
+                    getByName("${it}Test").dependsOn(iosTest)
                 }
 
                 watchosTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(watchosMain)
-                    getByName("${it.name}Test").dependsOn(watchosTest)
+                    getByName("${it}Main").dependsOn(watchosMain)
+                    getByName("${it}Test").dependsOn(watchosTest)
                 }
 
                 tvosTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(tvosMain)
-                    getByName("${it.name}Test").dependsOn(tvosTest)
+                    getByName("${it}Main").dependsOn(tvosMain)
+                    getByName("${it}Test").dependsOn(tvosTest)
                 }
 
                 darwinTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(darwinMain)
-                    getByName("${it.name}Test").dependsOn(darwinTest)
+                    getByName("${it}Main").dependsOn(darwinMain)
+                    getByName("${it}Test").dependsOn(darwinTest)
                 }
             }
 
@@ -190,8 +190,8 @@ fun Project.configureTargets() {
                 val desktopTest by getting
 
                 desktopTargets().forEach {
-                    getByName("${it.name}Main").dependsOn(desktopMain)
-                    getByName("${it.name}Test").dependsOn(desktopTest)
+                    getByName("${it}Main").dependsOn(desktopMain)
+                    getByName("${it}Test").dependsOn(desktopTest)
                 }
             }
 

@@ -5,11 +5,9 @@
 package io.ktor.utils.io
 
 import io.ktor.io.*
-import io.ktor.utils.io.bits.*
 import io.ktor.utils.io.core.*
-import io.ktor.utils.io.core.internal.*
 
-internal abstract class SourceByteReadChannel(val source: BufferedSource): ByteReadChannel {
+internal abstract class SourceByteReadChannel(val source: BufferedSource) : ByteReadChannel {
     override val availableForRead: Int
         get() = source.peek().readCapacity()
 
@@ -32,11 +30,6 @@ internal abstract class SourceByteReadChannel(val source: BufferedSource): ByteR
         return buffer.read(dst, offset, length)
     }
 
-    override suspend fun readAvailable(dst: ChunkBuffer): Int {
-        val buffer = source.read()
-        TODO("Not yet implemented")
-    }
-
     override suspend fun readFully(dst: ByteArray, offset: Int, length: Int) {
         var size = 0
         while (size < length) {
@@ -44,10 +37,6 @@ internal abstract class SourceByteReadChannel(val source: BufferedSource): ByteR
             val buffer = source.read()
             size += buffer.read(dst, offset + size, length - size)
         }
-    }
-
-    override suspend fun readFully(dst: ChunkBuffer, n: Int) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun readPacket(size: Int): ByteReadPacket {
@@ -106,15 +95,5 @@ internal abstract class SourceByteReadChannel(val source: BufferedSource): ByteR
 
     override suspend fun awaitContent() {
         source.awaitContent()
-    }
-
-    override suspend fun peekTo(
-        destination: Memory,
-        destinationOffset: Long,
-        offset: Long,
-        min: Long,
-        max: Long
-    ): Long {
-        TODO("Not yet implemented")
     }
 }

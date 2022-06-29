@@ -1,6 +1,5 @@
 package io.ktor.utils.io.core
 
-import io.ktor.utils.io.core.internal.*
 import java.nio.*
 import kotlin.contracts.*
 
@@ -8,37 +7,14 @@ import kotlin.contracts.*
  * Read at most `dst.remaining()` bytes to the specified [dst] byte buffer and change its position accordingly
  * @return number of bytes copied
  */
-public fun ByteReadPacket.readAvailable(dst: ByteBuffer): Int = readAsMuchAsPossible(dst, 0)
+public fun ByteReadPacket.readAvailable(dst: ByteBuffer): Int = TODO()
 
 /**
  * Read exactly `dst.remaining()` bytes to the specified [dst] byte buffer and change its position accordingly
  * @return number of bytes copied
  */
 public fun ByteReadPacket.readFully(dst: ByteBuffer): Int {
-    val rc = readAsMuchAsPossible(dst, 0)
-    if (dst.hasRemaining()) {
-        throw EOFException("Not enough data in packet to fill buffer: ${dst.remaining()} more bytes required")
-    }
-    return rc
-}
-
-private tailrec fun ByteReadPacket.readAsMuchAsPossible(bb: ByteBuffer, copied: Int): Int {
-    if (!bb.hasRemaining()) return copied
-    val current: ChunkBuffer = prepareRead(1) ?: return copied
-
-    val destinationCapacity = bb.remaining()
-    val available = current.readRemaining
-
-    return if (destinationCapacity >= available) {
-        current.readFully(bb, available)
-        releaseHead(current)
-
-        readAsMuchAsPossible(bb, copied + available)
-    } else {
-        current.readFully(bb, destinationCapacity)
-        headPosition = current.readPosition
-        copied + destinationCapacity
-    }
+    TODO()
 }
 
 /**
@@ -80,9 +56,7 @@ public inline fun BytePacketBuilder.writeByteBufferDirect(size: Int, block: (Byt
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return write(size) {
-        it.writeDirect(size, block)
-    }
+    TODO()
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -91,23 +65,5 @@ public inline fun ByteReadPacket.readDirect(size: Int, block: (ByteBuffer) -> Un
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    read(size) {
-        it.readDirect(block)
-    }
+    TODO()
 }
-
-@OptIn(ExperimentalContracts::class)
-@Deprecated("Use read {} instead.")
-public inline fun Input.readDirect(size: Int, block: (ByteBuffer) -> Unit) {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    read(size) { view ->
-        view.readDirect {
-            block(it)
-        }
-    }
-}
-
-internal fun Buffer.hasArray(): Boolean = memory.buffer.let { it.hasArray() && !it.isReadOnly }

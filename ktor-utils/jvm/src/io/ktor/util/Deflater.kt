@@ -36,7 +36,7 @@ internal fun Checksum.updateKeepPosition(buffer: ByteBuffer) {
 private suspend fun ByteWriteChannel.putGzipHeader() {
     writeShort(GZIP_MAGIC.reverseByteOrder())
     writeByte(Deflater.DEFLATED.toByte())
-    writeFully(GZIP_HEADER_PADDING)
+    TODO()
 }
 
 private suspend fun ByteWriteChannel.putGzipTrailer(crc: Checksum, deflater: Deflater) {

@@ -129,10 +129,7 @@ public suspend fun encodeChunked(
 public suspend fun encodeChunked(output: ByteWriteChannel, input: ByteReadChannel) {
     try {
         while (!input.isClosedForRead) {
-            input.read { source, startIndex, endIndex ->
-                if (endIndex == startIndex) return@read 0
-                output.writeChunk(source, startIndex.toInt(), endIndex.toInt())
-            }
+            TODO()
         }
 
         input.rethrowCloseCause()
@@ -156,15 +153,3 @@ private fun ByteReadChannel.rethrowCloseCause() {
 private const val CrLfShort: Short = 0x0d0a
 private val CrLf = "\r\n".toByteArray()
 private val LastChunkBytes = "0\r\n\r\n".toByteArray()
-
-private suspend fun ByteWriteChannel.writeChunk(memory: Memory, startIndex: Int, endIndex: Int): Int {
-    val size = endIndex - startIndex
-    writeIntHex(size)
-    writeShort(CrLfShort)
-
-    writeFully(memory, startIndex, endIndex)
-    writeFully(CrLf)
-    flush()
-
-    return size
-}

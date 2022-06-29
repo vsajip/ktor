@@ -59,7 +59,6 @@ public actual interface ByteReadChannel {
      * @return number of bytes were read or `-1` if the channel has been closed
      */
     public actual suspend fun readAvailable(dst: ByteArray, offset: Int, length: Int): Int
-    public actual suspend fun readAvailable(dst: ChunkBuffer): Int
     public suspend fun readAvailable(dst: ByteBuffer): Int
 
     /**
@@ -67,7 +66,6 @@ public actual interface ByteReadChannel {
      * Suspends if not enough bytes available.
      */
     public actual suspend fun readFully(dst: ByteArray, offset: Int, length: Int)
-    public actual suspend fun readFully(dst: ChunkBuffer, n: Int)
     public suspend fun readFully(dst: ByteBuffer): Int
 
     /**
@@ -187,33 +185,6 @@ public actual interface ByteReadChannel {
     public actual suspend fun discard(max: Long): Long
 
     /**
-     * Try to copy at least [min] but up to [max] bytes to the specified [destination] buffer from this input
-     * skipping [offset] bytes. If there are not enough bytes available to provide [min] bytes after skipping [offset]
-     * bytes then it will trigger the underlying source reading first and after that will
-     * simply copy available bytes even if EOF encountered so [min] is not a requirement but a desired number of bytes.
-     * It is safe to specify [max] greater than the destination free space.
-     * `min` shouldn't be bigger than the [destination] free space.
-     * This function could trigger the underlying source suspending reading.
-     * It is allowed to specify too big [offset] so in this case this function will always return `0` after prefetching
-     * all underlying bytes but note that it may lead to significant memory consumption.
-     * This function usually copy more bytes than [min] (unless `max = min`) but it is not guaranteed.
-     * When `0` is returned with `offset = 0` then it makes sense to check [endOfInput].
-     *
-     * @param destination to write bytes
-     * @param offset to skip input
-     * @param min bytes to be copied, shouldn't be greater than the buffer free space. Could be `0`.
-     * @param max bytes to be copied even if there are more bytes buffered, could be [Int.MAX_VALUE].
-     * @return number of bytes copied to the [destination] possibly `0`
-     */
-    public actual suspend fun peekTo(
-        destination: Memory,
-        destinationOffset: Long,
-        offset: Long,
-        min: Long,
-        max: Long
-    ): Long
-
-    /**
      * Suspend until the channel has bytes to read or gets closed. Throws exception if the channel was closed with an error.
      */
     public actual suspend fun awaitContent()
@@ -250,38 +221,7 @@ public actual suspend fun ByteReadChannel.copyTo(dst: ByteWriteChannel, limit: L
         return 0L
     }
 
-    return copyToImpl(dst, limit)
-}
-
-private suspend fun ByteReadChannel.copyToImpl(dst: ByteWriteChannel, limit: Long): Long {
-    val buffer = ChunkBuffer.Pool.borrow()
-    val dstNeedsFlush = !dst.autoFlush
-
-    try {
-        var copied = 0L
-
-        while (true) {
-            val remaining = limit - copied
-            if (remaining == 0L) break
-            buffer.resetForWrite(minOf(buffer.capacity.toLong(), remaining).toInt())
-
-            val size = readAvailable(buffer)
-            if (size == -1) break
-
-            dst.writeFully(buffer)
-            copied += size
-
-            if (dstNeedsFlush && availableForRead == 0) {
-                dst.flush()
-            }
-        }
-        return copied
-    } catch (t: Throwable) {
-        dst.close(t)
-        throw t
-    } finally {
-        buffer.release(ChunkBuffer.Pool)
-    }
+    TODO()
 }
 
 /**

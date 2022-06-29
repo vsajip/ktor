@@ -21,7 +21,7 @@ private val BASE64_INVERSE_ALPHABET = IntArray(256) {
  * Encode [String] in base64 format and UTF-8 character encoding.
  */
 public fun String.encodeBase64(): String = buildPacket {
-    writeText(this@encodeBase64)
+    TODO()
 }.encodeBase64()
 
 /**
@@ -69,7 +69,7 @@ public fun ByteArray.encodeBase64(): String {
 /**
  * Encode [ByteReadPacket] in base64 format
  */
-public fun ByteReadPacket.encodeBase64(): String = readBytes().encodeBase64()
+public fun ByteReadPacket.encodeBase64(): String = TODO()
 
 /**
  * Decode [String] from base64 format encoded in UTF-8.
@@ -79,29 +79,29 @@ public fun String.decodeBase64String(): String = String(decodeBase64Bytes(), cha
 /**
  * Decode [String] from base64 format
  */
-public fun String.decodeBase64Bytes(): ByteArray = buildPacket {
-    writeText(dropLastWhile { it == BASE64_PAD })
-}.decodeBase64Bytes().readBytes()
-
-/**
- * Decode [ByteReadPacket] from base64 format
- */
-public fun ByteReadPacket.decodeBase64Bytes(): Input = buildPacket {
-    val data = ByteArray(4)
-
-    while (remaining > 0) {
-        val read = readAvailable(data)
-
-        val chunk = data.foldIndexed(0) { index, result, current ->
-            result or (current.fromBase64().toInt() shl ((3 - index) * 6))
-        }
-
-        for (index in data.size - 2 downTo (data.size - read)) {
-            val origin = (chunk shr (8 * index)) and 0xff
-            writeByte(origin.toByte())
-        }
-    }
+public fun String.decodeBase64Bytes(): ByteArray {
+    TODO()
 }
+
+// /**
+// * Decode [ByteReadPacket] from base64 format
+// */
+// public fun ByteReadPacket.decodeBase64Bytes(): Input = buildPacket {
+//    val data = ByteArray(4)
+//
+//    while (remaining > 0) {
+//        val read = readAvailable(data)
+//
+//        val chunk = data.foldIndexed(0) { index, result, current ->
+//            result or (current.fromBase64().toInt() shl ((3 - index) * 6))
+//        }
+//
+//        for (index in data.size - 2 downTo (data.size - read)) {
+//            val origin = (chunk shr (8 * index)) and 0xff
+//            writeByte(origin.toByte())
+//        }
+//    }
+// }
 
 @Suppress("NOTHING_TO_INLINE")
 internal inline fun Int.toBase64(): Char = BASE64_ALPHABET[this]

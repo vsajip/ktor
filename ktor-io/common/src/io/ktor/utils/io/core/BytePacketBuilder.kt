@@ -23,66 +23,43 @@ import io.ktor.utils.io.pool.*
  * }
  * ```
  */
-public class BytePacketBuilder(
-    pool: ObjectPool<ChunkBuffer> = ChunkBuffer.Pool
-) : Output(pool) {
+public class BytePacketBuilder {
 
     /**
      * Number of bytes written to the builder after the creation or the last reset.
      */
     public val size: Int
-        get() = _size
+        get() = TODO()
 
     /**
      * If no bytes were written or the builder has been reset.
      */
     public val isEmpty: Boolean
-        get() = _size == 0
+        get() = TODO()
 
     /**
      * If at least one byte was written after the creation or the last reset.
      */
     public val isNotEmpty: Boolean
-        get() = _size > 0
+        get() = TODO()
 
-    @PublishedApi
-    internal val _pool: ObjectPool<ChunkBuffer>
-        get() = pool
-
-    /**
-     * Does nothing for memory-backed output
-     */
-    final override fun closeDestination() {
+    public fun append(value: Char): BytePacketBuilder {
+        TODO()
     }
 
-    /**
-     * Does nothing for memory-backed output
-     */
-    final override fun flush(source: Memory, offset: Int, length: Int) {
+    public fun append(value: CharSequence): BytePacketBuilder {
+        TODO()
     }
 
-    override fun append(value: Char): BytePacketBuilder {
-        return super.append(value) as BytePacketBuilder
-    }
-
-    override fun append(value: CharSequence?): BytePacketBuilder {
-        return super.append(value) as BytePacketBuilder
-    }
-
-    override fun append(value: CharSequence?, startIndex: Int, endIndex: Int): BytePacketBuilder {
-        return super.append(value, startIndex, endIndex) as BytePacketBuilder
+    public fun append(value: CharSequence, startIndex: Int, endIndex: Int): BytePacketBuilder {
+        TODO()
     }
 
     /**
      * Builds byte packet instance and resets builder's state to be able to build another one packet if needed
      */
     public fun build(): ByteReadPacket {
-        val size = size
-
-        return when (val head = stealAll()) {
-            null -> ByteReadPacket.Empty
-            else -> ByteReadPacket(head, size.toLong(), pool)
-        }
+        TODO()
     }
 
     override fun toString(): String {

@@ -11,38 +11,17 @@ import io.ktor.utils.io.pool.*
  * but creates a new view instead. Once packet created it should be either completely read (consumed) or released
  * via [release].
  */
-public class ByteReadPacket internal constructor(
-    head: ChunkBuffer,
-    remaining: Long,
-    pool: ObjectPool<ChunkBuffer>
-) : Input(head, remaining, pool) {
-    public constructor(head: ChunkBuffer, pool: ObjectPool<ChunkBuffer>) : this(head, head.remainingAll(), pool)
-
-    init {
-        markNoMoreChunksAvailable()
-    }
-
+public class ByteReadPacket {
     /**
      * Returns a copy of the packet. The original packet and the copy could be used concurrently. Both need to be
      * either completely consumed or released via [release]
      */
-    public final fun copy(): ByteReadPacket = ByteReadPacket(head.copyAll(), remaining, pool)
+    public final fun copy(): ByteReadPacket = TODO()
 
-    final override fun fill(): ChunkBuffer? = null
-
-    final override fun fill(destination: Memory, offset: Int, length: Int): Int {
-        return 0
-    }
-
-    final override fun closeSource() {
-    }
-
-    override fun toString(): String {
-        return "ByteReadPacket($remaining bytes remaining)"
-    }
+    override fun toString(): String = TODO()
 
     public companion object {
-        public val Empty: ByteReadPacket = ByteReadPacket(ChunkBuffer.Empty, 0L, ChunkBuffer.EmptyPool)
+        public val Empty: ByteReadPacket = TODO()
     }
 }
 

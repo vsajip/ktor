@@ -66,6 +66,7 @@ private fun CoroutineScope.inflate(
 
     if (gzip) {
         val header = source.readPacket(GZIP_HEADER_SIZE)
+        TODO()
         val magic = header.readShortLittleEndian()
         val format = header.readByte()
         val flags = header.readByte().toInt()

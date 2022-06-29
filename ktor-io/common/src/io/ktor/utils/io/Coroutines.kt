@@ -43,7 +43,7 @@ public fun CoroutineScope.reader(
     block: suspend ReaderScope.() -> Unit
 ): ReaderJob = launchChannel(coroutineContext, ByteChannel(autoFlush), attachJob = true, block = block)
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class)
 @Deprecated("Use scope.reader instead")
 public fun reader(
     coroutineContext: CoroutineContext,
@@ -83,7 +83,7 @@ public fun CoroutineScope.writer(
     block: suspend WriterScope.() -> Unit
 ): WriterJob = launchChannel(coroutineContext, ByteChannel(autoFlush), attachJob = true, block = block)
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class)
 @Deprecated("Use scope.writer instead")
 public fun writer(
     coroutineContext: CoroutineContext,

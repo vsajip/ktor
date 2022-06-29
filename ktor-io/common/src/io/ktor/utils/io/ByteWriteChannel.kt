@@ -1,5 +1,6 @@
 package io.ktor.utils.io
 
+import io.ktor.io.*
 import io.ktor.utils.io.bits.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
@@ -45,8 +46,6 @@ public expect interface ByteWriteChannel {
      */
     public suspend fun writeAvailable(src: ByteArray, offset: Int, length: Int): Int
 
-    public suspend fun writeAvailable(src: ChunkBuffer): Int
-
     /**
      * Writes all [src] bytes and suspends until all bytes written. Causes flush if buffer filled up or when [autoFlush]
      * Crashes if channel get closed while writing.
@@ -54,8 +53,6 @@ public expect interface ByteWriteChannel {
     public suspend fun writeFully(src: ByteArray, offset: Int, length: Int)
 
     public suspend fun writeFully(src: Buffer)
-
-    public suspend fun writeFully(memory: Memory, startIndex: Int, endIndex: Int)
 
     /**
      * Writes a [packet] fully or fails if channel get closed before the whole packet has been written
@@ -133,7 +130,6 @@ public expect interface ByteWriteChannel {
 }
 
 public suspend fun ByteWriteChannel.writeAvailable(src: ByteArray): Int = writeAvailable(src, 0, src.size)
-public suspend fun ByteWriteChannel.writeFully(src: ByteArray): Unit = writeFully(src, 0, src.size)
 
 public suspend fun ByteWriteChannel.writeShort(s: Int) {
     return writeShort((s and 0xffff).toShort())
@@ -162,7 +158,7 @@ public fun ByteWriteChannel.close(): Boolean = close(null)
 
 public suspend fun ByteWriteChannel.writeStringUtf8(s: CharSequence) {
     val packet = buildPacket {
-        writeText(s)
+        TODO()
     }
 
     return writePacket(packet)
@@ -170,7 +166,7 @@ public suspend fun ByteWriteChannel.writeStringUtf8(s: CharSequence) {
 
 public suspend fun ByteWriteChannel.writeStringUtf8(s: String) {
     val packet = buildPacket {
-        writeText(s)
+        TODO()
     }
 
     return writePacket(packet)

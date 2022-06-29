@@ -21,17 +21,7 @@ public suspend inline fun ByteReadChannel.consumeEachBufferRange(visitor: Consum
 
     do {
         continueFlag = false
-        read { source, start, endExclusive ->
-            val nioBuffer = when {
-                endExclusive > start -> source.slice(start, endExclusive - start).buffer
-                else -> Memory.Empty.buffer
-            }
-
-            lastChunkReported = nioBuffer.remaining() == availableForRead && isClosedForWrite
-            continueFlag = visitor(nioBuffer, lastChunkReported)
-
-            nioBuffer.position()
-        }
+        TODO()
 
         if (lastChunkReported && isClosedForRead) {
             break

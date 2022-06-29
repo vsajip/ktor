@@ -157,8 +157,6 @@ private suspend fun Input.copyTo(channel: ByteWriteChannel) {
     }
 
     while (!this@copyTo.endOfInput) {
-        channel.write { freeSpace, startOffset, endExclusive ->
-            this@copyTo.readAvailable(freeSpace, startOffset, endExclusive - startOffset).toInt()
-        }
+        TODO()
     }
 }
